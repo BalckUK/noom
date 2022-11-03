@@ -20,7 +20,19 @@ app.get("/*", (req, res) => res.redirect("/"));
 const handleListen = () => console.log("Listening on http://localhost:3000");
 
 const server = http.createServer(app);
-const wss = new WebSocketServer({ server })
+const wss = new WebSocketServer({ server });
+
+/*function handleConnection(socket){
+    console.log(socket);
+}
+
+wss.on("connection", handleConnection)*/
+
+wss.on("connection", (socket) => {
+    //console.log(socket);
+    console.log("Connected to Browser");
+    socket.send("hello!");
+})
 
 server.listen(3000, handleListen);
 
