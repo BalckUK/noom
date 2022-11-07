@@ -1,9 +1,7 @@
 //alert("hello!");
-//const socket = new WebSocket("http://localhost:3000");
 const messageList = document.querySelector("ul");
 const nickForm = document.querySelector("#nick");
 const messageForm = document.querySelector("#message");
-//const messageForm = document.querySelector("form");
 const socket = new WebSocket(`ws://${window.location.host}`);
 
 
@@ -19,7 +17,6 @@ socket.addEventListener("open", () => {
 
 
 socket.addEventListener("message", (message) => {
-    //console.log("Just got this : ", message.data, "from the server");
     const li = document.createElement("li");
     li.innerText = message.data;
     messageList.append(li);

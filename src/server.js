@@ -1,5 +1,3 @@
-//console.log("hello");
-
 import http from "http";
 import WebSocket, { WebSocketServer } from "ws";
 import express from 'express';
@@ -31,14 +29,24 @@ const sockets = [];
 wss.on("connection", handleConnection)*/
 
 wss.on("connection", (socket) => {
-    //console.log(socket);
     sockets.push(socket);
+    socket["nickname"]="Anonymous";
     console.log("Connected to Browser");
     socket.on("close", () => console.log("DisConnected from Browser"));
-    socket.on("message", (message) => {
-        //console.log(`${message}`)
+    //socket.on("message", (message) => {
+    socket.on("message", (msg) => {
         //socket.send(`${message}`)
-        sockets.forEach(aSocket => aSocket.send(`${message}`));
+        const message = JSON.parse(msg);
+        //sockets.forEach(aSocket => aSocket.send(`${message}`));
+        switch(message.type){
+            case "new_message":
+                //sockets.forEach(aSocket => aSocket.send(`${message.payload}`));
+                sockets.forEach(aSocket => aSocket.send(`${socket.nickname}: ${message.payload}`));
+                break;
+            case "nickname":
+                socket["nickname"] = message.payload;
+                break;
+        }
     })
    // socket.send("hello!");
 })
